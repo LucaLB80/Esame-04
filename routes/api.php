@@ -11,25 +11,12 @@ use Illuminate\Support\Facades\Route;
 use App\Helpers\AppHelper;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-
-
 //<------------------------------------------- API PUBBLICHE ---------------------------------------------------------------->
 
 Route::post('/registrazione', [AccediController::class, 'registrazione']);
-Route::get('/accedi/{utente}', [AccediController::class, 'show']);
-Route::put('/modificaPassword', [AccediController::class, 'modificaPassword'])->middleware('autenticazione');
-Route::post('/logout', [AccediController::class, 'logout'])->middleware('autenticazione');;
+Route::get('/accedi/{utente}/{hash?}', [AccediController::class, 'show']);
+Route::put('/modificaPassword', [AccediController::class, 'modificaPassword']);
+Route::post('/logout', [AccediController::class, 'logout']);
 
 
 //<------------------------------------------- API CON AUTENTICAZIONE UTENTE ---------------------------------------------------------------->
@@ -39,32 +26,26 @@ Route::middleware(['autenticazione', 'contattiRuoli:Amministratore,Utente'])->gr
     // CRUD NAZIONI
     Route::get('/nazioni', [NazioneController::class, 'index']);  // Lista nazione
     Route::get('/nazioni/{nazione}', [NazioneController::class, 'show']); // Dettaglio nazione
-    Route::put('/nazioni/{nazione}', [NazioneController::class, 'update']); // Modifica nazione  
 
     // CRUD COMUNI ITALIANI
     Route::get('/comuni', [ComuneItalianoController::class, 'index']);  // Lista comune Italiano
     Route::get('/comuni/{comune}', [ComuneItalianoController::class, 'show']); // Dettaglio comune Italiano
-    Route::put('/comuni/{comune}', [ComuneItalianoController::class, 'update']); // Modifica comune Italiano 
 
     // CRUD FILM
     Route::get('/film', [FilmController::class, 'index']); // Lista film
     Route::get('/film/{film}', [FilmController::class, 'show']); // Dettaglio film
-    Route::put('/film/{film}', [FilmController::class, 'update']); // Modifica film  
 
     // CRUD EPISODI
     Route::get('/episodi', [EpisodioController::class, 'index']); // Lista episodi
     Route::get('/episodi/{episodio}', [EpisodioController::class, 'show']); // Dettaglio episodi   
-    Route::put('/episodi/{episodio}', [EpisodioController::class, 'update']); // Modifica episodi   
 
     // CRUD SERIE
     Route::get('/serie', [SerieController::class, 'index']); // Lista serie
     Route::get('/serie/{serie}', [SerieController::class, 'show']); // Dettaglio serie   
-    Route::put('/serie/{serie}', [SerieController::class, 'update']); // Modifica serie  
 
     // CRUD CATEGORIE
     Route::get('/categorie', [CategoriaController::class, 'index']); // Lista categoria
     Route::get('/categorie/{categoria}', [CategoriaController::class, 'show']); // Dettaglio categoria   
-    Route::put('/categorie/{categoria}', [CategoriaController::class, 'update']); // Modifica categoria  
 
 });
 //<------------------------------------------- API CON AUTENTICAZIONE AMMINISTRATORE ---------------------------------------------------------------->
@@ -72,27 +53,33 @@ Route::middleware(['autenticazione', 'contattiRuoli:Amministratore,Utente'])->gr
 Route::middleware(['autenticazione', 'contattiRuoli:Amministratore'])->group(function () {
 
     // CRUD NAZIONI
-    Route::post('/nazioni', [NazioneController::class, 'store']); // Creazione nazione     
+    Route::post('/nazioni', [NazioneController::class, 'store']); // Creazione nazione  
+    Route::put('/nazioni/{nazione}', [NazioneController::class, 'update']); // Modifica nazione     
     Route::delete('/nazioni/{nazione}', [NazioneController::class, 'destroy']); // Eliminazione nazione
 
     // CRUD COMUNI ITALIANI
     Route::post('/comuni', [ComuneItalianoController::class, 'store']); // Creazione comune Italiano  
+    Route::put('/comuni/{comune}', [ComuneItalianoController::class, 'update']); // Modifica comune Italiano 
     Route::delete('/comuni/{comune}', [ComuneItalianoController::class, 'destroy']); // Eliminazione comune Italiano
 
     // CRUD FILM
     Route::post('/film', [FilmController::class, 'store']); // Creazione film 
+    Route::put('/film/{film}', [FilmController::class, 'update']); // Modifica film  
     Route::delete('/film/{film}', [FilmController::class, 'destroy']); // Eliminazione film
 
     // CRUD EPISODI
     Route::post('/episodi', [EpisodioController::class, 'store']); // Creazione episodi
+    Route::put('/episodi/{episodio}', [EpisodioController::class, 'update']); // Modifica episodi   
     Route::delete('/episodi/{episodio}', [EpisodioController::class, 'destroy']); // Eliminazione episodi
 
     // CRUD SERIE
     Route::post('/serie', [SerieController::class, 'store']); // Creazione serie 
+    Route::put('/serie/{serie}', [SerieController::class, 'update']); // Modifica serie  
     Route::delete('/serie/{serie}', [SerieController::class, 'destroy']); // Eliminazione serie
 
     // CRUD CATEGORIE
     Route::post('/categorie', [CategoriaController::class, 'store']); // Creazione categoria 
+    Route::put('/categorie/{categoria}', [CategoriaController::class, 'update']); // Modifica categoria  
     Route::delete('/categorie/{categoria}', [CategoriaController::class, 'destroy']); // Eliminazione categoria
 });
 
